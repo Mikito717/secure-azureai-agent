@@ -1,0 +1,40 @@
+# Azure Developer CLI 統合アプリケーション設定
+name: secure-azureai-agent-unified
+metadata:
+  template: secure-azureai-agent-unified@0.0.1-beta
+
+services:
+  # 統合アプリケーションサービス
+  unified-app:
+    project: .
+    host: appservice
+    language: python
+    
+    # Azure App Service 設定
+    config:
+      # Python 設定
+      pythonVersion: "3.12"
+      
+      # アプリケーション設定
+      appSettings:
+        ENVIRONMENT: "production"
+        CHAINLIT_PORT: "8501"
+        WEBSITES_PORT: "8000"
+        PYTHONPATH: "/home/site/wwwroot/backend/src"
+        SCM_DO_BUILD_DURING_DEPLOYMENT: "true"
+        ENABLE_ORYX_BUILD: "true"
+        
+      # 起動設定
+      startupCommand: "bash startup.sh"
+      
+      # リソース設定
+      sku: B1  # Basic tier で十分
+      
+hooks:
+  # デプロイ前処理
+  predeploy:
+    - echo "📦 Preparing unified application deployment"
+    
+  # デプロイ後処理  
+  postdeploy:
+    - echo "✅ Unified application deployed successfully"
